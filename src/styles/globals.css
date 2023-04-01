@@ -14,3 +14,21 @@
   -webkit-mask: var(--mask);
   mask: var(--mask);
 }
+
+select {
+  height: 2rem;
+  background-color: #2c2e23;
+  outline: none;
+  border-radius: 2px;
+  border: 1px solid #535347;
+}
+
+select:hover {
+  height: 2rem;
+  background-color: #535347;
+  outline: none;
+}
+
+::selection {
+  background: #535347;
+}
