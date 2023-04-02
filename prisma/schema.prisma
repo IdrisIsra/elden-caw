@@ -14,10 +14,15 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model Caw {
+    id         String   @id @default(cuid())
+    caw        String
+    userId     String
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    likedBy    User[]   @relation("Likes")
+    dislikedBy User[]   @relation("Dislikes")
 }
 
 // Necessary for Next auth
@@ -48,13 +53,16 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
+    id               String    @id @default(cuid())
+    name             String?
+    email            String?   @unique
+    emailVerified    DateTime?
+    image            String?
+    accounts         Account[]
+    sessions         Session[]
+    caws             Caw[]
+    likedCaws        Caw[]     @relation("Likes")
+    dislikedCaws     Caw[]     @relation("Dislikes")
 }
 
 model VerificationToken {

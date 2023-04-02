@@ -7,7 +7,7 @@ import Caw from "~/components/Caw";
 import CawInput from "~/components/CawInput";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const hello = api.main.hello.useQuery({ text: "from tRPC" });
 
   return (
     <>
@@ -45,7 +45,7 @@ export default Home;
 const AuthShowcase: React.FC = () => {
   const { data: sessionData } = useSession();
 
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
+  const { data: secretMessage } = api.main.getSecretMessage.useQuery(
     undefined, // no input
     { enabled: sessionData?.user !== undefined }
   );

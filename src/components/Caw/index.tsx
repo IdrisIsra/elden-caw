@@ -5,8 +5,7 @@ const Caw = (props: any) => {
   return (
     <Link
       className="caw flex flex-col gap-4 border-y-2 border-[#a2a18b] bg-white/10 px-6 py-2 text-slate-100 hover:bg-white/20 md:px-10"
-      href="https://google.com"
-      target="_blank"
+      href="/"
     >
       <div>
         <p className="text-lg font-semibold">evening,</p>
