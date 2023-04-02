@@ -1,27 +1,28 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
+import { api } from "~/utils/api";
 import { words, templates, conjunctions } from "~/utils/constants";
+import { getProperty } from "~/utils/helpers";
 
 type TCawInput = {
-  template: string;
-  words: string;
-  conjunctions: string;
+  template: number;
+  words: number;
+  conjunction: number;
+  template2: number;
+  words2: number;
 };
-
-// gets property from object with bracket notation, otherwise TS complains
-function getProperty<T, K extends keyof T>(o: T, propertyName: K): T[K] {
-  return o[propertyName]; // o[propertyName] is of type T[K]
-}
 
 const CawInput = () => {
   const { register, handleSubmit } = useForm<TCawInput>();
-  const [data, setData] = useState("");
   const [firstWordsGroup, setFirstWordsGroup] = useState("enemies");
   const [secondWordsGroup, setSecondWordsGroup] = useState("enemies");
 
-  const onSubmit: SubmitHandler<TCawInput> = (data) => {
-    setData(JSON.stringify(data));
+  const cawMutation = api.main.addCaw.useMutation();
+
+  const onSubmit: SubmitHandler<TCawInput> = async (data) => {
+    console.log(data);
+    await cawMutation.mutateAsync(data);
   };
 
   return (
@@ -34,15 +35,15 @@ const CawInput = () => {
         <div className="grid grid-cols-12 items-center gap-4">
           <label className="col-span-4">Templates:</label>
           <select
-            {...register("template", { required: true })}
+            {...register("template", { required: true, valueAsNumber: true })}
             className="col-span-8"
           >
             <option value="" disabled selected>
               Select a template
             </option>
-            {Object.keys(templates).map((constant) => (
-              <option value={constant} key={constant}>
-                {constant}
+            {Object.entries(templates).map((template) => (
+              <option value={template[1]} key={template[0]}>
+                {template[0]}
               </option>
             ))}
           </select>
@@ -62,7 +63,7 @@ const CawInput = () => {
               ))}
             </select>
             <select
-              {...register("words", { required: true })}
+              {...register("words", { required: true, valueAsNumber: true })}
               className="w-1/2"
             >
               {Object.entries(getProperty(words, firstWordsGroup)).map(
@@ -79,15 +80,15 @@ const CawInput = () => {
         <div className="grid grid-cols-12 items-center gap-4">
           <label className="col-span-4">Conjugations:</label>
           <select
-            {...register("conjunctions", { required: true })}
+            {...register("conjunction", { valueAsNumber: true })}
             className="col-span-8"
           >
-            <option value="" disabled selected>
+            <option value={0} disabled>
               Optional
             </option>
-            {Object.keys(conjunctions).map((conjunction) => (
-              <option value={conjunction} key={conjunction}>
-                {conjunction}
+            {Object.entries(conjunctions).map((conjunction) => (
+              <option value={conjunction[1]} key={conjunction[0]}>
+                {conjunction[0]}
               </option>
             ))}
           </select>
@@ -96,15 +97,15 @@ const CawInput = () => {
         <div className="grid grid-cols-12 items-center gap-4">
           <label className="col-span-4">Templates:</label>
           <select
-            {...register("template", { required: true })}
+            {...register("template2", { valueAsNumber: true })}
             className="col-span-8"
           >
-            <option value="" disabled selected>
+            <option value={0} disabled>
               Select a template
             </option>
-            {Object.keys(templates).map((constant) => (
-              <option value={constant} key={constant}>
-                {constant}
+            {Object.entries(templates).map((template) => (
+              <option value={template[1]} key={template[1]}>
+                {template[0]}
               </option>
             ))}
           </select>
@@ -124,7 +125,7 @@ const CawInput = () => {
               ))}
             </select>
             <select
-              {...register("words", { required: true })}
+              {...register("words2", { valueAsNumber: true })}
               className="w-1/2"
             >
               <option value="" disabled>
@@ -140,9 +141,15 @@ const CawInput = () => {
             </select>
           </div>
         </div>
-        <p>{data}</p>
         {/* Submit */}
-        <input type="submit" value={"Caw"} />
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="rounded bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+          >
+            Caw
+          </button>
+        </div>
       </form>
     </div>
   );

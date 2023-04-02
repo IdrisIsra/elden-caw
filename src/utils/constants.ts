@@ -1,10 +1,13 @@
-type TWords = {
+type TDictionary = {
   [key: string]: {
     [key: string]: number;
   };
 };
+type TWords = {
+  [key: string]: number;
+};
 
-export const templates = {
+export const templates: TWords = {
   "**** ahead": 1,
   "Likely ****": 2,
   "If only I had a ****...": 3,
@@ -31,60 +34,7 @@ export const templates = {
   "****...": 24,
 };
 
-export const replaceAsterisks = (template: number, word: string) => {
-  switch (template) {
-    case 1:
-      return `${word} ahead`;
-    case 2:
-      return `Likely ${word}`;
-    case 3:
-      return `If only I had a ${word}...`;
-    case 4:
-      return `${word}, O ${word}`;
-    case 5:
-      return `Ahh, ${word}...`;
-    case 6:
-      return `No ${word} ahead`;
-    case 7:
-      return `First off, ${word}`;
-    case 8:
-      return `Didn't expect ${word}...`;
-    case 9:
-      return `Behold, ${word}!`;
-    case 10:
-      return `${word} required ahead`;
-    case 11:
-      return `Seek ${word}`;
-    case 12:
-      return `Visions of ${word}...`;
-    case 13:
-      return `Offer ${word}`;
-    case 14:
-      return `${word}!`;
-    case 15:
-      return `Be wary of ${word}`;
-    case 16:
-      return `Still no ${word}...`;
-    case 17:
-      return `Could this be a ${word}?`;
-    case 18:
-      return `Praise the ${word}!`;
-    case 19:
-      return `${word}?`;
-    case 20:
-      return `Try ${word}`;
-    case 21:
-      return `Why is it always ${word}?`;
-    case 22:
-      return `Time for ${word}`;
-    case 23:
-      return `Let there be ${word}`;
-    case 24:
-      return `${word}...`;
-  }
-};
-
-export const words: TWords = {
+export const words: TDictionary = {
   enemies: {
     enemy: 25,
     "weak foe": 26,
@@ -479,7 +429,7 @@ export const words: TWords = {
   },
 };
 
-export const conjunctions = {
+export const conjunctions: TWords = {
   "and then": 391,
   or: 392,
   but: 393,
