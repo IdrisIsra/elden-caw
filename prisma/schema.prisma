@@ -17,6 +17,7 @@ datasource db {
 model Caw {
     id         String   @id @default(cuid())
     caw        String
+    userName   String
     userId     String
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt

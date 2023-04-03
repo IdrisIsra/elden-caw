@@ -18,7 +18,13 @@ const CawInput = () => {
   const [firstWordsGroup, setFirstWordsGroup] = useState("enemies");
   const [secondWordsGroup, setSecondWordsGroup] = useState("enemies");
 
-  const cawMutation = api.main.addCaw.useMutation();
+  const utils = api.useContext();
+  const cawMutation = api.main.addCaw.useMutation({
+    async onSuccess() {
+      // invalidates the question query and then navigates to success page
+      await utils.main.getAll.invalidate();
+    },
+  });
 
   const onSubmit: SubmitHandler<TCawInput> = async (data) => {
     console.log(data);

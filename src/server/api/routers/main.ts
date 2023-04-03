@@ -9,14 +9,6 @@ import {
 import { generateCaw } from "~/utils/helpers";
 
 export const mainRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-
   addCaw: protectedProcedure
     .input(
       z.object({
@@ -32,13 +24,41 @@ export const mainRouter = createTRPCRouter({
         data: {
           caw: generateCaw(input),
           user: { connect: { id: ctx.session?.user?.id } },
+          userName: ctx.session?.user?.name ?? "",
+        },
+      });
+      return entry;
+    }),
+
+  addLike: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const entry = await ctx.prisma.caw.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          likedBy: {
+            connect: [{ id: ctx.session?.user?.id }],
+          },
         },
       });
       return entry;
     }),
 
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.caw.findMany();
+    return ctx.prisma.caw.findMany({
+      take: 100,
+      orderBy: [{ createdAt: "desc" }],
+      include: {
+        likedBy: true,
+        dislikedBy: true,
+      },
+    });
   }),
 
   getSecretMessage: protectedProcedure.query(() => {

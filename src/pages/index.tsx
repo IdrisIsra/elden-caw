@@ -38,7 +38,7 @@ const Home: NextPage = () => {
           <div className="flex w-full flex-col gap-2 md:w-1/2">
             {sessionData && <CawInput />}
             {cawData?.map((caw) => (
-              <Caw key={caw.id} caw={caw.caw} />
+              <Caw key={caw.id} {...caw} />
             ))}
           </div>
         </div>
