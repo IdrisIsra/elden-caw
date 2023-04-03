@@ -50,6 +50,26 @@ export const mainRouter = createTRPCRouter({
       return entry;
     }),
 
+  addDislike: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const entry = await ctx.prisma.caw.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          dislikedBy: {
+            connect: [{ id: ctx.session?.user?.id }],
+          },
+        },
+      });
+      return entry;
+    }),
+
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.caw.findMany({
       take: 100,
