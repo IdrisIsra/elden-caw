@@ -9,13 +9,15 @@ const Caw = ({
   userName,
   id,
   likedBy,
+  createdAt,
 }: {
   caw: string;
   userName: string;
   id: string;
   likedBy: User[];
+  createdAt: Date;
 }) => {
-  const [appraisals, setAppraisals] = useState(likedBy.length); // [1
+  const [appraisals, setAppraisals] = useState(likedBy.length);
   const [isLiked, setIsLiked] = useState(false);
   const { data: sessionData } = useSession();
   const likeMutation = api.main.addLike.useMutation();
@@ -34,18 +36,27 @@ const Caw = ({
   };
 
   return (
-    <div className="caw flex cursor-pointer flex-col gap-4 border-y-2 border-[#a2a18b] bg-white/10 px-6 py-2 text-slate-100 hover:bg-white/20 md:px-10">
-      <div>
+    <div className="caw flex cursor-pointer flex-col  border-y-2 border-[#a2a18b] bg-white/10 px-6 py-2 text-slate-100 hover:bg-white/20 md:px-12">
+      <div className="py-10">
         <p className="text-lg font-semibold">{caw}</p>
       </div>
-      <div className="flex justify-between">
-        <div>
-          {isLiked && <p className="text-lg font-semibold">Rated Good</p>}
-        </div>
-        <p className="text-lg font-semibold">Appraisals {appraisals}</p>
+      <div className="flex justify-between px-6">
+        <div>{isLiked && <p>Rated Good</p>}</div>
+        <p className="">Appraisals {appraisals}</p>
       </div>
-      <div className="caw flex items-center justify-between gap-2 border-t border-[#a2a18b] px-8 pt-2">
-        <p>@{userName}</p>
+      <div className="caw flex items-center justify-between gap-2 border-t border-[#a2a18b] px-6 pt-2">
+        <div className="flex gap-2 text-white/50">
+          <p className="font-bold hover:text-white">@{userName}</p>
+          <p className="">
+            {createdAt.toLocaleString("en-GB", {
+              hour: "numeric",
+              minute: "numeric",
+              year: "2-digit",
+              month: "short",
+              day: "numeric",
+            })}
+          </p>
+        </div>
         <div className="flex gap-2">
           {!isLiked && (
             <>
