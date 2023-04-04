@@ -22,7 +22,7 @@ export const mainRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const name = ctx.session?.user?.name?.split(" ")[0] ?? "";
       const initialLastName = ctx.session?.user?.name?.split(" ")[1]?.[0] ?? "";
-      const userName = name + initialLastName;
+      const userName = name + " " + initialLastName + ".";
 
       const entry = await ctx.prisma.caw.create({
         data: {
