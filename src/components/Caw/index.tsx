@@ -66,10 +66,10 @@ const Caw = ({
         </div>
         <p className="">Appraisals {appraisals}</p>
       </div>
-      <div className="caw flex items-center justify-between gap-2 border-t border-[#a2a18b] px-6 pt-2">
-        <div className="flex gap-2 text-white/50">
+      <div className="caw flex items-center justify-between gap-2 border-t border-[#a2a18b] px-3 pt-2 md:px-6">
+        <div className="flex gap-2 text-white/50 ">
           <p className="font-bold hover:text-white">@{userName}</p>
-          <p className="">
+          <p className="self-center text-xs">
             {createdAt.toLocaleString("en-GB", {
               hour: "numeric",
               minute: "numeric",
