@@ -85,6 +85,34 @@ export const mainRouter = createTRPCRouter({
     });
   }),
 
+  getOne: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(({ input, ctx }) => {
+      return ctx.prisma.caw.findMany({
+        where: {
+          userId: input.userId,
+        },
+        take: 100,
+        orderBy: [{ createdAt: "desc" }],
+        include: {
+          likedBy: true,
+          dislikedBy: true,
+        },
+      });
+    }),
+
+  getUser: publicProcedure.input(z.object({ userId: z.string() })).query(({ input, ctx }) => {
+    return ctx.prisma.user.findFirst({
+      where: {
+        id: input.userId,
+      },
+    })
+  }),
+
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
   }),
